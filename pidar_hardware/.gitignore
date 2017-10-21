@@ -1,0 +1,3 @@
+# CLion Build Directory
+cmake-build-debug/
+.idea/
