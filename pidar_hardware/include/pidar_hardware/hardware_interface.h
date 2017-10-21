@@ -7,6 +7,14 @@
 
 #include <BrickPi3/BrickPi3.h>
 
+class PidarHW
+{
+public:
+  void init();
+private:
+  BrickPi3 BP;
+
+};
 
 
 #endif //PIDAR_HARDWARE_HARDWARE_INTERFACE_H
