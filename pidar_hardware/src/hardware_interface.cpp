@@ -1,5 +1,27 @@
 #include <pidar_hardware/hardware_interface.h>
-#include <boost/assign/list_of.hpp>
+
+static uint8_t nxtPortStringToInt(std::string portString)
+{
+  uint8_t port = 0;
+  if(portString == "A")
+  {
+    port = PORT_A;
+  }
+  else if(portString == "B")
+  {
+    port = PORT_B;
+  }
+  else if(portString == "C")
+  {
+    port = PORT_C;
+  }
+  else if(portString == "D")
+  {
+    port = PORT_D;
+  }
+
+  return port;
+}
 
 namespace pidar_hardware {
 
@@ -11,11 +33,31 @@ namespace pidar_hardware {
   max_accel_(0.0),
   max_speed_(0.0)
   {
+    // Retrieve parameters
     private_nh_.param("wheel_diameter", wheel_diameter_, wheel_diameter_);
     private_nh_.param("max_accel", max_accel_, max_accel_);
     private_nh_.param("max_speed", max_speed_, max_speed_);
 
+    // Set the NXT ports for the motors
+    std::string left_wheel_port_str = "A";
+    std::string right_wheel_port_str = "B";
+    private_nh_.param("left_wheel_motor_port", left_wheel_port_str, left_wheel_port_str);
+    private_nh_.param("right_wheel_motor_port", right_wheel_port_str, right_wheel_port_str);
+    left_wheel_motor_port_ = nxtPortStringToInt(left_wheel_port_str);
+    right_wheel_motor_port_ = nxtPortStringToInt(right_wheel_port_str);
+
     registerControlInterfaces();
+  }
+
+  void PidarHW::initializeHardware()
+  {
+    BP.detect(); // Make sure that the BrickPi3 is communicating and that the firmware is compatible with the drivers.
+
+    // Reset the encoders
+    BP.offset_motor_encoder(PORT_A, BP.get_motor_encoder(PORT_A));
+    BP.offset_motor_encoder(PORT_B, BP.get_motor_encoder(PORT_B));
+    BP.offset_motor_encoder(PORT_C, BP.get_motor_encoder(PORT_C));
+    BP.offset_motor_encoder(PORT_D, BP.get_motor_encoder(PORT_D));
   }
 
   void PidarHW::registerControlInterfaces()

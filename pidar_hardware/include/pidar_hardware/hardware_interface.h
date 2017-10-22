@@ -8,6 +8,7 @@
 #include <ros/ros.h>
 #include <ros/node_handle.h>
 #include <sensor_msgs/JointState.h>
+#include <string.h>
 
 #include <BrickPi3/BrickPi3.h>
 
@@ -25,6 +26,8 @@ namespace pidar_hardware {
     void getInfo();
 
   private:
+    void initializeHardware();
+
     void registerControlInterfaces();
 
     BrickPi3 BP;
@@ -39,6 +42,9 @@ namespace pidar_hardware {
     double wheel_diameter_, max_accel_, max_speed_;
 
     double polling_timeout_;
+
+    uint8_t left_wheel_motor_port_;
+    uint8_t right_wheel_motor_port_;
 
     struct Joint
     {
