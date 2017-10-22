@@ -1,6 +1,8 @@
 #include <pidar_hardware/hardware_interface.h>
 
-static uint8_t nxtPortStringToInt(std::string portString)
+const double pi = 3.14159265359;
+
+static uint8_t nxtPortStringToInt(const std::string &portString)
 {
   uint8_t port = 0;
   if(portString == "A")
@@ -46,7 +48,13 @@ namespace pidar_hardware {
     left_wheel_motor_port_ = nxtPortStringToInt(left_wheel_port_str);
     right_wheel_motor_port_ = nxtPortStringToInt(right_wheel_port_str);
 
+    initializeHardware();
     registerControlInterfaces();
+  }
+
+  PidarHW::~PidarHW()
+  {
+    BP.reset_all();
   }
 
   void PidarHW::initializeHardware()
@@ -94,7 +102,20 @@ namespace pidar_hardware {
 
   void PidarHW::writeCommandsToHardware()
   {
+    BP.set_motor_dps(left_wheel_motor_port_, angularToDps(left_wheel_.velocity_command));
+    BP.set_motor_dps(right_wheel_motor_port_, angularToDps(right_wheel_.velocity_command));
+  }
 
+  double PidarHW::dpsToAngular(const int16_t &dps)
+  {
+    const double encoderWheelTicks = 360.0;
+    return (2 * pi * dps) / encoderWheelTicks;
+  }
+
+  int16_t PidarHW::angularToDps(const double &angular)
+  {
+    const double encoderWheelTicks = 360.0;
+    return static_cast<int16_t>((encoderWheelTicks * angular) / (2*pi));
   }
 
   void PidarHW::getInfo()

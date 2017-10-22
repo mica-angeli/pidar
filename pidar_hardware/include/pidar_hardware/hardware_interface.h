@@ -18,6 +18,7 @@ namespace pidar_hardware {
   {
   public:
     PidarHW(ros::NodeHandle nh, ros::NodeHandle private_nh, double target_control_freq);
+    ~PidarHW();
 
     void updateJointsFromHardware();
 
@@ -29,6 +30,9 @@ namespace pidar_hardware {
     void initializeHardware();
 
     void registerControlInterfaces();
+
+    double dpsToAngular(const int16_t &dps);
+    int16_t angularToDps(const double &angular);
 
     BrickPi3 BP;
 
@@ -43,8 +47,7 @@ namespace pidar_hardware {
 
     double polling_timeout_;
 
-    uint8_t left_wheel_motor_port_;
-    uint8_t right_wheel_motor_port_;
+    uint8_t left_wheel_motor_port_, right_wheel_motor_port_;
 
     struct Joint
     {
@@ -59,8 +62,7 @@ namespace pidar_hardware {
       { }
     };
 
-    Joint left_wheel_;
-    Joint right_wheel_;
+    Joint left_wheel_, right_wheel_;
 
   };
 
