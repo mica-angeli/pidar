@@ -1,4 +1,5 @@
 #include <pidar_hardware/hardware_interface.h>
+#include <boost/assign/list_of.hpp>
 
 namespace pidar_hardware {
 
@@ -19,7 +20,28 @@ namespace pidar_hardware {
 
   void PidarHW::registerControlInterfaces()
   {
+    // Initialize and register left wheel handles
+    hardware_interface::JointStateHandle left_wheel_jsh("left_wheel",
+                                                              &left_wheel_.position, &left_wheel_.velocity,
+                                                              &left_wheel_.effort);
+    joint_state_interface_.registerHandle(left_wheel_jsh);
 
+    hardware_interface::JointHandle left_wheel_jh(left_wheel_jsh,
+                                                  &left_wheel_.velocity_command);
+    velocity_joint_interface_.registerHandle(left_wheel_jh);
+
+    // Initialize and register right wheel handles
+    hardware_interface::JointStateHandle right_wheel_jsh("right_wheel",
+                                                        &right_wheel_.position, &right_wheel_.velocity,
+                                                        &right_wheel_.effort);
+    joint_state_interface_.registerHandle(right_wheel_jsh);
+
+    hardware_interface::JointHandle right_wheel_jh(right_wheel_jsh,
+                                                  &right_wheel_.velocity_command);
+    velocity_joint_interface_.registerHandle(right_wheel_jh);
+
+    registerInterface(&joint_state_interface_);
+    registerInterface(&velocity_joint_interface_);
   }
 
 

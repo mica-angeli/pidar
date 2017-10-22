@@ -51,7 +51,10 @@ namespace pidar_hardware {
       Joint() :
               position(0), velocity(0), effort(0), velocity_command(0)
       { }
-    } joints_[4];
+    };
+
+    Joint left_wheel_;
+    Joint right_wheel_;
 
   };
 
