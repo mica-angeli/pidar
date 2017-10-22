@@ -2,17 +2,19 @@ cmake_minimum_required(VERSION 2.8.3)
 project(pidar_hardware)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-# add_compile_options(-std=c++11)
+#add_compile_options(-std=c++11)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   roscpp
+  hardware_interface
+  sensor_msgs
 )
 
 ## System dependencies are found with CMake's conventions
-# find_package(Boost REQUIRED COMPONENTS system)
+find_package(Boost REQUIRED COMPONENTS system)
 
 
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -103,8 +105,8 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES brickpi3
-  CATKIN_DEPENDS roscpp
-#  DEPENDS system_lib
+  CATKIN_DEPENDS roscpp hardware_interface sensor_msgs
+  DEPENDS Boost
 )
 
 ###########
@@ -115,6 +117,7 @@ catkin_package(
 ## Your package locations should be listed before other locations
 include_directories(
   include
+  ${Boost_INCLUDE_DIRS}
   ${catkin_INCLUDE_DIRS}
 )
 
@@ -131,7 +134,7 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-add_executable(${PROJECT_NAME} src/hardware_interface.cpp src/BrickPi3.cpp)
+add_executable(${PROJECT_NAME} src/hardware_interface.cpp src/BrickPi3.cpp src/hardware_main.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -144,9 +147,7 @@ add_executable(${PROJECT_NAME} src/hardware_interface.cpp src/BrickPi3.cpp)
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(${PROJECT_NAME}_node
-#   ${catkin_LIBRARIES}
-# )
+target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 
 #############
 ## Install ##

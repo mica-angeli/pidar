@@ -1,21 +1,44 @@
-//
-// Created by ricardo on 10/21/17.
-//
-
 #include <pidar_hardware/hardware_interface.h>
 
-void PidarHW::init()
-{
-  BP.detect();
-  char str[33];
-  BP.get_id(str);
-  printf("Serial Number   : %s\n", str);
-}
+namespace pidar_hardware {
 
-int main(void)
-{
-  PidarHW pidar;
-  pidar.init();
-  printf("HelloBrickWorld\n");
-  return 0;
+  PidarHW::PidarHW(ros::NodeHandle nh, ros::NodeHandle private_nh, double target_control_freq)
+  :
+  nh_(nh),
+  private_nh_(private_nh),
+  wheel_diameter_(0.0),
+  max_accel_(0.0),
+  max_speed_(0.0)
+  {
+    private_nh_.param("wheel_diameter", wheel_diameter_, wheel_diameter_);
+    private_nh_.param("max_accel", max_accel_, max_accel_);
+    private_nh_.param("max_speed", max_speed_, max_speed_);
+
+    registerControlInterfaces();
+  }
+
+  void PidarHW::registerControlInterfaces()
+  {
+
+  }
+
+
+  void PidarHW::updateJointsFromHardware()
+  {
+
+  }
+
+  void PidarHW::writeCommandsToHardware()
+  {
+
+  }
+
+  void PidarHW::getInfo()
+  {
+    BP.detect();
+    char str[33];
+    BP.get_id(str);
+    printf("Serial Number   : %s\n", str);
+  }
+
 }
