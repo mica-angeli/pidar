@@ -28,7 +28,26 @@ int main(int argc, char *argv[])
   ros::init(argc, argv, "pidar_hardware");
   ros::NodeHandle nh, private_nh("~");
 
-  pidar_hardware::PidarHW pidar(nh, private_nh, 0.0);
+  double control_frequency;
+  private_nh.param("control_frequency", control_frequency, 10.0);
+
+  pidar_hardware::PidarHW pidar(nh, private_nh, control_frequency);
+  controller_manager::ControllerManager cm(&pidar, nh);
   pidar.getInfo();
+
+  ros::CallbackQueue pidar_queue;
+  ros::AsyncSpinner pidar_spinner(1, &pidar_queue);
+
+  time_source::time_point last_time = time_source::now();
+  ros::TimerOptions control_timer(
+          ros::Duration(1 / control_frequency),
+          boost::bind(controlLoop, boost::ref(pidar), boost::ref(cm), boost::ref(last_time)),
+          &pidar_queue);
+  ros::Timer control_loop = nh.createTimer(control_timer);
+
+  pidar_spinner.start();
+
+  ros::spin();
+
   return 0;
 }
