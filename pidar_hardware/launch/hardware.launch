@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<launch>
+    <node pkg="pidar_hardware" type="pidar_hardware" name="pidar_hardware" output="screen">
+        <param name="control_frequency" value="10.0" />
+        <param name="left_wheel_motor_port" value="A" />
+        <param name="right_whel_motor_port" value="B" />
+    </node>
+
+    <!-- Differential controller parameters and basic localization -->
+    <include file="$(find pidar_control)/launch/control.launch" />
+
+    <!--Teleop -->
+    <!--<include file="$(find pidar_control)/launch/teleop.launch" />-->
+
+</launch>
