@@ -11,6 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   hardware_interface
   sensor_msgs
+  controller_manager
 )
 
 ## System dependencies are found with CMake's conventions
@@ -105,7 +106,7 @@ find_package(Boost REQUIRED COMPONENTS system)
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES brickpi3
-  CATKIN_DEPENDS roscpp hardware_interface sensor_msgs
+  CATKIN_DEPENDS roscpp hardware_interface sensor_msgs controller_manager
   DEPENDS Boost
 )
 

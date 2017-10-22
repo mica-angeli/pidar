@@ -106,6 +106,12 @@ namespace pidar_hardware {
     BP.set_motor_dps(right_wheel_motor_port_, angularToDps(right_wheel_.velocity_command));
   }
 
+  void PidarHW::reportLoopDuration(const ros::Duration &duration)
+  {
+    // nothing to be done
+//    software_status_task_.updateControlFrequency(1 / duration.toSec());
+  }
+
   double PidarHW::dpsToAngular(const int16_t &dps)
   {
     const double encoderWheelTicks = 360.0;

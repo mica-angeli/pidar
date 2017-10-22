@@ -26,6 +26,8 @@ namespace pidar_hardware {
 
     void getInfo();
 
+    void reportLoopDuration(const ros::Duration &duration);
+
   private:
     void initializeHardware();
 
