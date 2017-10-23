@@ -3,15 +3,15 @@
 
   <!-- Load robot description -->
   <param name="robot_description"
-    command="$(find xacro)/xacro --inorder '$(find pidar_description)/urdf/pidar.xacro'" />
+    command="$(find xacro)/xacro '$(find pidar_description)/urdf/pidar.xacro' --inorder" />
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
 
   <!-- Load controller configuration -->
   <rosparam command="load" file="$(find pidar_control)/config/control.yaml" />
 
   <!-- Spawn controllers -->
   <node name="base_controller_spawner" pkg="controller_manager" type="spawner" output="screen"
-        args="diff_drive_controller joint_state_controller"/>
-
-  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+        args="joint_state_controller diff_drive_controller"/>
 
 </launch>

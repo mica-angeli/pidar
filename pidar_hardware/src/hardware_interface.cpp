@@ -33,12 +33,16 @@ namespace pidar_hardware {
   private_nh_(private_nh),
   wheel_diameter_(0.0),
   max_accel_(0.0),
-  max_speed_(0.0)
+  max_speed_(0.0),
+  left_wheel_handle_("left_wheel_joint"),
+  right_wheel_handle_("right_wheel_joint")
   {
     // Retrieve parameters
     private_nh_.param("wheel_diameter", wheel_diameter_, wheel_diameter_);
     private_nh_.param("max_accel", max_accel_, max_accel_);
     private_nh_.param("max_speed", max_speed_, max_speed_);
+    private_nh_.param("left_wheel_handle", left_wheel_handle_, left_wheel_handle_);
+    private_nh_.param("right_wheel_handle", right_wheel_handle_, right_wheel_handle_);
 
     // Set the NXT ports for the motors
     std::string left_wheel_port_str = "A";
@@ -71,7 +75,7 @@ namespace pidar_hardware {
   void PidarHW::registerControlInterfaces()
   {
     // Initialize and register left wheel handles
-    hardware_interface::JointStateHandle left_wheel_jsh("left_wheel",
+    hardware_interface::JointStateHandle left_wheel_jsh(left_wheel_handle_,
                                                               &left_wheel_.position, &left_wheel_.velocity,
                                                               &left_wheel_.effort);
     joint_state_interface_.registerHandle(left_wheel_jsh);
@@ -81,7 +85,7 @@ namespace pidar_hardware {
     velocity_joint_interface_.registerHandle(left_wheel_jh);
 
     // Initialize and register right wheel handles
-    hardware_interface::JointStateHandle right_wheel_jsh("right_wheel",
+    hardware_interface::JointStateHandle right_wheel_jsh(right_wheel_handle_,
                                                         &right_wheel_.position, &right_wheel_.velocity,
                                                         &right_wheel_.effort);
     joint_state_interface_.registerHandle(right_wheel_jsh);

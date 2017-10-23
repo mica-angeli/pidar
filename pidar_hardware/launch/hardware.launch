@@ -2,6 +2,8 @@
 <launch>
     <node pkg="pidar_hardware" type="pidar_hardware" name="pidar_hardware" output="screen">
         <param name="control_frequency" value="10.0" />
+        <param name="left_wheel_handle" value="left_wheel_joint" />
+        <param name="right_wheel_handle" value="right_wheel_joint" />
         <param name="left_wheel_motor_port" value="A" />
         <param name="right_whel_motor_port" value="B" />
     </node>

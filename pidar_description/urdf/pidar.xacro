@@ -128,22 +128,22 @@
 
   <!-- Transmissions -->
   <transmission name="left_wheel_tran">
-    <type>transmission_interface/SimpleTransmission</type>
+    <type>hardware_interface</type>
     <joint name="left_wheel_joint">
-      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      <hardwareInterface>VelocityJointInterface</hardwareInterface>
     </joint>
     <actuator name="left_wheel_motor">
-      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      <hardwareInterface>VelocityJointInterface</hardwareInterface>
     </actuator>
   </transmission>
 
   <transmission name="right_wheel_tran">
-    <type>transmission_interface/SimpleTransmission</type>
+    <type>hardware_interface</type>
     <joint name="right_wheel_joint">
-      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      <hardwareInterface>VelocityJointInterface</hardwareInterface>
     </joint>
     <actuator name="right_wheel_motor">
-      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      <hardwareInterface>VelocityJointInterface</hardwareInterface>
     </actuator>
   </transmission>
 

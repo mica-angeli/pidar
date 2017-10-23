@@ -66,6 +66,8 @@ namespace pidar_hardware {
 
     Joint left_wheel_, right_wheel_;
 
+    std::string left_wheel_handle_, right_wheel_handle_;
+
   };
 
 } // namespace pidar_hardware
