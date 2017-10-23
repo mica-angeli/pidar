@@ -106,8 +106,17 @@ namespace pidar_hardware {
 
   void PidarHW::writeCommandsToHardware()
   {
-    BP.set_motor_dps(left_wheel_motor_port_, angularToDps(left_wheel_.velocity_command));
-    BP.set_motor_dps(right_wheel_motor_port_, angularToDps(right_wheel_.velocity_command));
+    if (fabs(left_wheel_.velocity_command) > 0.001) {
+      BP.set_motor_dps(left_wheel_motor_port_, angularToDps(left_wheel_.velocity_command));
+    } else {
+      BP.set_motor_power(left_wheel_motor_port_, 0);
+    }
+
+    if (fabs(left_wheel_.velocity_command) > 0.001) {
+      BP.set_motor_dps(right_wheel_motor_port_, angularToDps(right_wheel_.velocity_command));
+    } else {
+      BP.set_motor_power(right_wheel_motor_port_, 0);
+    }
   }
 
   void PidarHW::reportLoopDuration(const ros::Duration &duration)
