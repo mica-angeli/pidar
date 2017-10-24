@@ -17,8 +17,7 @@ void controlLoop(pidar_hardware::PidarHW &pidar,
   last_time = this_time;
 
   // Process control loop
-  pidar.reportLoopDuration(elapsed);
-  pidar.updateJointsFromHardware();
+  pidar.updateJointsFromHardware(elapsed);
   cm.update(ros::Time::now(), elapsed);
   pidar.writeCommandsToHardware();
 }

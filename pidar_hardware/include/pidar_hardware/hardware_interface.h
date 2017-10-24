@@ -20,13 +20,12 @@ namespace pidar_hardware {
     PidarHW(ros::NodeHandle nh, ros::NodeHandle private_nh, double target_control_freq);
     ~PidarHW();
 
-    void updateJointsFromHardware();
+    void updateJointsFromHardware(const ros::Duration &duration);
 
     void writeCommandsToHardware();
 
     void getInfo();
 
-    void reportLoopDuration(const ros::Duration &duration);
 
   private:
     void initializeHardware();

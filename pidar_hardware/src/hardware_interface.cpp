@@ -99,9 +99,27 @@ namespace pidar_hardware {
   }
 
 
-  void PidarHW::updateJointsFromHardware()
+  void PidarHW::updateJointsFromHardware(const ros::Duration &duration)
   {
+    int32_t encoderValue;
+    if(BP.get_motor_encoder(left_wheel_motor_port_, encoderValue))
+    {
+      double delta = dpsToAngular(encoderValue) - left_wheel_.position - left_wheel_.position_offset;
 
+      // detect suspiciously large readings, possibly from encoder rollover
+      if (std::abs(delta) < 1.0)
+      {
+        left_wheel_.position += delta;
+        left_wheel_.velocity = dpsToAngular(encoderValue) / duration.toSec();
+      }
+      else
+      {
+        // suspicious! drop this measurement and update the offset for subsequent readings
+        left_wheel_.position_offset += delta;
+        ROS_DEBUG("Dropping overflow measurement from encoder");
+      }
+
+    }
   }
 
   void PidarHW::writeCommandsToHardware()
@@ -117,12 +135,6 @@ namespace pidar_hardware {
     } else {
       BP.set_motor_power(right_wheel_motor_port_, 0);
     }
-  }
-
-  void PidarHW::reportLoopDuration(const ros::Duration &duration)
-  {
-    // nothing to be done
-//    software_status_task_.updateControlFrequency(1 / duration.toSec());
   }
 
   double PidarHW::dpsToAngular(const int16_t &dps)
