@@ -107,18 +107,32 @@ namespace pidar_hardware {
       double delta = dpsToAngular(encoderValue) - left_wheel_.position - left_wheel_.position_offset;
 
       // detect suspiciously large readings, possibly from encoder rollover
-      if (std::abs(delta) < 1.0)
-      {
+      if (std::abs(delta) < 1.0) {
         left_wheel_.position += delta;
         left_wheel_.velocity = dpsToAngular(encoderValue) / duration.toSec();
-      }
-      else
-      {
+      } else {
         // suspicious! drop this measurement and update the offset for subsequent readings
         left_wheel_.position_offset += delta;
         ROS_DEBUG("Dropping overflow measurement from encoder");
       }
+    }
 
+    if(BP.get_motor_encoder(right_wheel_motor_port_, encoderValue))
+    {
+      double delta = dpsToAngular(encoderValue) - right_wheel_.position - right_wheel_.position_offset;
+
+      // detect suspiciously large readings, possibly from encoder rollover
+      if (std::abs(delta) < 1.0)
+      {
+        right_wheel_.position += delta;
+        right_wheel_.velocity = dpsToAngular(encoderValue) / duration.toSec();
+      }
+      else
+      {
+        // suspicious! drop this measurement and update the offset for subsequent readings
+        right_wheel_.position_offset += delta;
+        ROS_DEBUG("Dropping overflow measurement from encoder");
+      }
     }
   }
 
