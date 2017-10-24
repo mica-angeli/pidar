@@ -24,6 +24,10 @@ namespace pidar_hardware {
 
     void writeCommandsToHardware();
 
+    void spinLidar();
+
+    void stopLidar();
+
     void getInfo();
 
 
@@ -48,7 +52,9 @@ namespace pidar_hardware {
 
     double polling_timeout_;
 
-    uint8_t left_wheel_motor_port_, right_wheel_motor_port_;
+    int lidar_pwm_;
+
+    uint8_t left_wheel_motor_port_, right_wheel_motor_port_, lidar_motor_port_;
 
     struct Joint
     {

@@ -35,25 +35,33 @@ namespace pidar_hardware {
   max_accel_(0.0),
   max_speed_(0.0),
   left_wheel_handle_("left_wheel_joint"),
-  right_wheel_handle_("right_wheel_joint")
+  right_wheel_handle_("right_wheel_joint"),
+  lidar_pwm_(0)
   {
     // Retrieve parameters
     private_nh_.param("wheel_diameter", wheel_diameter_, wheel_diameter_);
     private_nh_.param("max_accel", max_accel_, max_accel_);
     private_nh_.param("max_speed", max_speed_, max_speed_);
+
+    private_nh_.param("lidar_pwm", lidar_pwm_, lidar_pwm_);
+
     private_nh_.param("left_wheel_handle", left_wheel_handle_, left_wheel_handle_);
     private_nh_.param("right_wheel_handle", right_wheel_handle_, right_wheel_handle_);
 
     // Set the NXT ports for the motors
     std::string left_wheel_port_str = "A";
     std::string right_wheel_port_str = "B";
+    std::string lidar_port_str = "D";
     private_nh_.param("left_wheel_motor_port", left_wheel_port_str, left_wheel_port_str);
     private_nh_.param("right_wheel_motor_port", right_wheel_port_str, right_wheel_port_str);
+    private_nh_.param("lidar_motor_port", lidar_port_str, lidar_port_str);
     left_wheel_motor_port_ = nxtPortStringToInt(left_wheel_port_str);
     right_wheel_motor_port_ = nxtPortStringToInt(right_wheel_port_str);
+    lidar_motor_port_ = nxtPortStringToInt(lidar_port_str);
 
     initializeHardware();
     registerControlInterfaces();
+    spinLidar();
   }
 
   PidarHW::~PidarHW()
@@ -149,6 +157,16 @@ namespace pidar_hardware {
     } else {
       BP.set_motor_power(right_wheel_motor_port_, 0);
     }
+  }
+
+  void PidarHW::spinLidar()
+  {
+    BP.set_motor_power(lidar_motor_port_, lidar_pwm_);
+  }
+
+  void PidarHW::stopLidar()
+  {
+    BP.set_motor_power(lidar_motor_port_, 0);
   }
 
   double PidarHW::dpsToAngular(const int16_t &dps)

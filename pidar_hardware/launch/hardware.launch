@@ -5,7 +5,9 @@
         <param name="left_wheel_handle" value="left_wheel_joint" />
         <param name="right_wheel_handle" value="right_wheel_joint" />
         <param name="left_wheel_motor_port" value="A" />
-        <param name="right_whel_motor_port" value="B" />
+        <param name="right_wheel_motor_port" value="B" />
+        <param name="lidar_motor_port" value="D" />
+        <param name="lidar_pwm" value="49" />
     </node>
 
     <!-- Differential controller parameters and basic localization -->
